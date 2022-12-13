@@ -1,0 +1,5 @@
+backend/node_modules/
+chatbot/node_modules/
+backend/.env
+backend/package-lock.json
+chatbot/package-lock.json
