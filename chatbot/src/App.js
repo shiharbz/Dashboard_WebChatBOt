@@ -20,8 +20,7 @@ function App() {
           <GlobalStyles
             styles={{
               body: {
-                // backgroundColor: "#2a2d64",
-                // backgroundColor: "#2a2d64",
+             
 
                 background:
                   // "linear-gradient(to right,#0f2027,#203a43, #2c5364);",
