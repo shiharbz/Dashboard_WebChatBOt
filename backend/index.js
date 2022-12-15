@@ -7,8 +7,10 @@ app.use(express.json());
 
 
 const cookieParser = require("cookie-parser");
-
+const mongoose = require("mongoose");
+mongoose.set('strictQuery', true);
 app.use(cookieParser());
+
 dotenv.config();
 
 
@@ -18,5 +20,16 @@ app.use(cors({
 }));
 app.use("/authUser", require("./routers/userRouter"));
 
+app.get("/", function (req, res) {
+  res.send("ChatBot backend");
+});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+mongoose.connect(
+  process.env.MDB_CONNECT_STRING,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (err) => {
+    if (err) return console.error(err);
+    console.log("connected to MongoDB");
+  }
+);

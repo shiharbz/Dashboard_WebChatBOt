@@ -6,35 +6,41 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import TextField from "@mui/material/TextField";
-
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import theme from "../theme";
+import Divider from "@mui/material/Divider";
+import Drawer from '@mui/material/Drawer';
+const drawerWidth = 100;
 
 const FAQ = () => {
   const theme = useTheme();
   return (
-    <div sx={{ display: "flex", flexDirection: "row" }}>
+    <Box sx={{ display: "flex" }}>
       <Box
+        m="20px"
         sx={{
-          flexFlow: 1,
-          marginTop: 8,
-          display: "block",
-          // flexDirection: "column",
-          alignItems: "center",
+        marginLeft: "-40px",
+           p: 4,
+          border: "1px grey",
+          background: "#FFF",
         }}
       >
         <TextField
           margin="normal"
           required
+          fullWidth
           id="intent"
           label="Add an intent"
           name="intent"
-          // autoComplete="email"
+          
           autoFocus
-          sx={{ background: "#FFF" }}
         />
-        
-        
+        <Divider/>
+        <List>Hiii</List>
       </Box>
+
       <Box m="20px">
         {/* <Header title="FAQ" subtitle="Frequently Asked Questions Page" /> */}
 
@@ -109,7 +115,7 @@ const FAQ = () => {
           </AccordionDetails>
         </Accordion>
       </Box>
-    </div>
+    </Box>
   );
 };
 

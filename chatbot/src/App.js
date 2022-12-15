@@ -8,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import theme from './theme'
 import { GlobalStyles } from '@mui/material';
+import { UserContextProvider } from "./context/UserContext";
 
 
 function App() {
@@ -15,29 +16,29 @@ function App() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Container>
-          <GlobalStyles
-            styles={{
-              body: {
-             
-
-                background:
-                  // "linear-gradient(to right,#0f2027,#203a43, #2c5364);",
-                  "linear-gradient(to right,#8360c3,#2ebf91);",
-                width: "100%",
-                height: "100%",
-                margin: 0,
-                padding: 0,
-              },
-            }}
-          />
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/dashboard" element={<UserDashboard />} />
-          </Routes>
-        </Container>
+        <UserContextProvider>
+          <CssBaseline />
+          <Container>
+            <GlobalStyles
+              styles={{
+                body: {
+                  background:
+                    // "linear-gradient(to right,#0f2027,#203a43, #2c5364);",
+                    "linear-gradient(to right,#8360c3,#2ebf91);",
+                  width: "100%",
+                  height: "100%",
+                  margin: 0,
+                  padding: 0,
+                },
+              }}
+            />
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
+            </Routes>
+          </Container>
+        </UserContextProvider>
       </ThemeProvider>
     </div>
   );

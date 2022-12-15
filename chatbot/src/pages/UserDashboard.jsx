@@ -210,9 +210,9 @@ export default function UserDashboard() {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Flow />
+        {/* <Flow /> */}
 
-        {/* <FAQ /> */}
+        <FAQ />
       </Box>
     </Box>
   );
