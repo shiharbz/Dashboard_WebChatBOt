@@ -13,10 +13,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import theme from "../theme";
-import ErrorMessage from "../misc/ErrorMessage";
+// import ErrorMessage from "../misc/ErrorMessage";
 
 import API from "../axiosConfig";
 import { Alert } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -36,6 +38,8 @@ function Copyright(props) {
   );
 }
 
+
+
 export default function SignUp() {
 
   const [firstName, setFirstName] = useState("");
@@ -43,7 +47,8 @@ export default function SignUp() {
   const [formEmail, setFormEmail] = useState("");
   const [formPassword, setFormPassword] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
-  
+    let navigate = useNavigate();
+
   
   const [errorMessage, setErrorMessage] = useState(null);
   
@@ -69,29 +74,18 @@ export default function SignUp() {
 
       return;
     }
-    alert("Registration successful...Please Log in again");
-    // logOutt();
-    // navigate("/merchantLogin");
+    <Alert onClose={() => {}}>
+      Registration successful...Please Log in again!
+    </Alert>;
+     alert("Registration successful...Please Log in again");
+    //  logOut();
+     navigate("/");
 
     console.log(document.cookie);
    
 
-    // const data = new FormData(event.currentTarget);
-    // const fname = data.get("firstName");
-    // const lname = data.get("lastName");
-
-    // const email = data.get("email");
-    // const password = data.get("password");
    
     
-  
-    // console.log({
-    //   fname:data.get("firstName"),
-    //   lname: data.get("lastName"),
-
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
      
  
 
@@ -139,13 +133,14 @@ export default function SignUp() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              {errorMessage && (
+            {errorMessage && (
                 <Alert severity="error">
                   {errorMessage}
              
                 </Alert>
               )}
+            <Grid item xs={12} sm={6}>
+             
 
               <TextField
                 autoComplete="given-name"

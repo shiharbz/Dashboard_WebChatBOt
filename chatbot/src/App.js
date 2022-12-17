@@ -10,13 +10,13 @@ import theme from './theme'
 import { GlobalStyles } from '@mui/material';
 import { UserContextProvider } from "./context/UserContext";
 
-
+import getUser from '../src/context/UserContext'
 function App() {
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <UserContextProvider>
+        <UserContextProvider >
           <CssBaseline />
           <Container>
             <GlobalStyles

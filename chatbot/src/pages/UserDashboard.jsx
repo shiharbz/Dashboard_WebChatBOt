@@ -1,4 +1,4 @@
-import * as React from "react";
+import  React,{useState,useEffect,useContext} from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -19,13 +19,17 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
-import ShowChartIcon from '@mui/icons-material/ShowChart';
+import ShowChartIcon from "@mui/icons-material/ShowChart";
 import FAQ from "../components/FAQ";
-import Flow from '../components/Flow';
+import Flow from "../components/Flow";
 import { Button } from "@mui/material";
+import API from "../axiosConfig";
+import { useNavigate } from "react-router-dom";
+
+import { Link } from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 
-const navItems = ["Profile", "About", "Logout"];
 
 const drawerWidth = 240;
 
@@ -96,8 +100,24 @@ const Drawer = styled(MuiDrawer, {
 
 export default function UserDashboard() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+    let navigate = useNavigate();
 
+    const { user, getUser } = useContext(UserContext);
+   useEffect(() => {
+     
+       getUser()
+       
+   
+   }, [user]);
+
+  
+  async function logout() {
+    await API.get("/authUser/logout");
+    // await getMerchant();
+
+    navigate("/");
+  }
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -129,15 +149,14 @@ export default function UserDashboard() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Welcome to Dashboard
+            Welcome to Dashboard 
           </Typography>
           {/* <Divider /> */}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
-              </Button>
-            ))}
+           
+            <Button sx={{ color: "#FFF" }}>Profile</Button>
+            <Button sx={{ color: "#FFF" }}>About</Button>
+            <Button sx={{ color: "#FFF" }} onClick={logout}>Logout</Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -158,7 +177,7 @@ export default function UserDashboard() {
         <Divider />
 
         <List>
-          {["FAQ", "FlowChart", "Chat Log"].map((text, index) => (
+          {["Flows", "Q&A", "Chat Log"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
@@ -174,7 +193,7 @@ export default function UserDashboard() {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <LiveHelpIcon /> : <ShowChartIcon />}
+                  {index % 2 === 0 ? <ShowChartIcon /> : <LiveHelpIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
