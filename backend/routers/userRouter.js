@@ -126,9 +126,10 @@ router.post("/login",  async (req, res) => {
       },
       process.env.JWT_SECRET
     );
-    res.json({ token: token });
+    res.json({ token: token, id: existingUser._id });
     console.log("token"+token)
-    res.cookie("token", token, { httpOnly: true }).send();
+    res.cookie("token", token,id, { httpOnly: true }).send();
+    res.send({ token: token, id: existingUser._id });
   } catch (err) {
     res.status(500).send();
   }
@@ -138,6 +139,7 @@ router.get("/loggedIn", (req, res) => {
   try {
  
     const token = req.token;
+    // const email = req.response.email
     // const token = req.cookies.token;
     console.log("token--------"+token);
 

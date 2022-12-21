@@ -1,4 +1,4 @@
-import  React,{useState,useEffect,useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -10,16 +10,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import LiveHelpIcon from "@mui/icons-material/LiveHelp";
-import ShowChartIcon from "@mui/icons-material/ShowChart";
+
 import FAQ from "../components/FAQ";
 import Flow from "../components/Flow";
 import { Button } from "@mui/material";
@@ -28,8 +19,13 @@ import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
-
-
+import SideBar from "../layouts/SideBar";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Login from "./Login";
+import useToken from "../features/useToken";
 
 const drawerWidth = 240;
 
@@ -53,7 +49,6 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
-
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -80,7 +75,6 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
-
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -99,22 +93,16 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function UserDashboard() {
+  const { token, setToken } = useToken();
+
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-    let navigate = useNavigate();
+  let navigate = useNavigate();
+  const { user, getUser } = useContext(UserContext);
 
-    const { user, getUser } = useContext(UserContext);
-   useEffect(() => {
-     
-       getUser()
-       
-   
-   }, [user]);
-
-  
   async function logout() {
     await API.get("/authUser/logout");
-    // await getMerchant();
+    sessionStorage.clear();
 
     navigate("/");
   }
@@ -129,7 +117,12 @@ export default function UserDashboard() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar component="nav" position="fixed" open={open}>
+      <AppBar
+        component="nav"
+        position="fixed"
+        open={open}
+        sx={{ background: "#0f2027" }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -149,14 +142,16 @@ export default function UserDashboard() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Welcome to Dashboard 
+            Welcome to Dashboard {user}
+            {/* {user.firstname} */}
           </Typography>
           {/* <Divider /> */}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-           
             <Button sx={{ color: "#FFF" }}>Profile</Button>
             <Button sx={{ color: "#FFF" }}>About</Button>
-            <Button sx={{ color: "#FFF" }} onClick={logout}>Logout</Button>
+            <Button sx={{ color: "#FFF" }} onClick={logout}>
+              Logout
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
@@ -170,63 +165,9 @@ export default function UserDashboard() {
             )}
           </IconButton>
         </DrawerHeader>
-        {/* <Typography variant="h6" component="h6">
-          Name
-        </Typography> */}
 
-        <Divider />
-
-        <List>
-          {["Flows", "Q&A", "Chat Log"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <ShowChartIcon /> : <LiveHelpIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {["Data", "FlowChart", "Settings"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <MailIcon /> : <InboxIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        <SideBar />
       </Drawer>
-
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         {/* <Flow /> */}
