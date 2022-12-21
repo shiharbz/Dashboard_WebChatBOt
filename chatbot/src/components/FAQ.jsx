@@ -22,7 +22,7 @@ const FAQ = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <Box
-        m="20px"
+        m="10px"w="30%"
         sx={{
           marginLeft: "-40px",
           p: 4,
@@ -62,7 +62,7 @@ const FAQ = () => {
         </ListItem>
       </Box>
 
-      <Box m="20px">
+      <Box m="10px" w="45%">
         {/* <Header title="FAQ" subtitle="Frequently Asked Questions Page" /> */}
 
         <Accordion defaultExpanded>
@@ -99,7 +99,8 @@ const FAQ = () => {
               eget.
             </Typography>
           </AccordionDetails>
-        </Accordion>
+        </Accordion></Box>
+        <Box m="10px" w="45%">
         <Accordion defaultExpanded>
           <TextField
             sx={{ padding: "12px" }}
