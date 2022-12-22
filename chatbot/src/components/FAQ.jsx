@@ -1,10 +1,6 @@
-import { Box, Button, Checkbox, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 // import Header from "../../components/Header";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 import TextField from "@mui/material/TextField";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -13,14 +9,60 @@ import Divider from "@mui/material/Divider";
 import { useContext, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import UserContext from "../context/UserContext";
+import AddIcon from "@mui/icons-material/Add";
+import API from "../axiosConfig";
+import { Alert } from "@mui/material";
+import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import QueAndRes from "./QueAndRes";
 
 const drawerWidth = 100;
 
 const FAQ = () => {
   const theme = useTheme();
-  const { userData, setUserData } = useContext(UserContext);
-    const [errorMessage, setErrorMessage] = useState(null);
+  const { userData } = useContext(UserContext);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [intent, setIntent] = useState("");
+  const [intentDatas, setIntentDatas] = useState([]);
+  const user = userData.user;
+  const token = userData.token;
+  async function addIntent(e) {
+    e.preventDefault();
+    const intentData = {
+      title: intent,
+    };
 
+    try {
+      const Response = await API.post(
+        `/intent/addTitle/${userData.user.id}`,
+        intentData
+      );
+
+      localStorage.getItem("auth-token", Response.data.token);
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data.errorMessage) {
+          setErrorMessage(err.response.data.errorMessage);
+        }
+      }
+      return;
+    }
+    alert("added successfully");
+    window.location.reload(false);
+  }
+  async function getIntentDatas() {
+    const intentsRes = await API.get("/intent/all", {
+      headers: { "x-auth-token": token },
+    });
+    setIntentDatas(intentsRes.data);
+  }
+  useEffect(() => {
+    if (token) {
+      getIntentDatas();
+    } else {
+      setIntentDatas([]);
+    }
+  }, [user]);
 
   return (
     <>
@@ -35,116 +77,44 @@ const FAQ = () => {
             background: "#FFF",
           }}
         >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="intent"
-            label="Add an intent"
-            name="intent"
-            autoFocus
-          />
-
+          {" "}
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+          <Box component="form" onSubmit={addIntent} sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="intent"
+              label="Add an intent"
+              name="intent"
+              value={intent}
+              onChange={(e) => setIntent(e.target.value)}
+              autoFocus
+            />
+            <Button variant="text" type="submit">
+              <AddIcon />
+            </Button>
+          </Box>
           <Divider />
           <ListItem disablePadding sx={{ display: "block", padding: "4px" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                px: 2.5,
-              }}
-            >
-              <ListItemText primary="Default message" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding sx={{ display: "block", padding: "4px" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                px: 2.5,
-              }}
-            >
-              <ListItemText primary="Welcome message" />
-            </ListItemButton>
+            {intentDatas.map((data, i) => (
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  px: 2.5,
+                }}
+              >
+                <ListItemText primary={data.title} />{" "}
+              </ListItemButton>
+            ))}
           </ListItem>
         </Box>
-
-        <Box m="10px" w="45%">
-          {/* <Header title="FAQ" subtitle="Frequently Asked Questions Page" /> */}
-
-          <Accordion defaultExpanded>
-            <TextField
-              sx={{ padding: "12px" }}
-              margin="normal"
-              required
-              fullWidth
-              id="questions"
-              label="Add a training phrase"
-              name="questions"
-              autoFocus
-            />
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              {" "}
-              <Typography color={theme.palette.grey[500]} variant="h5">
-                Training Phrases
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                1.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Typography>
-              <Typography>
-                2.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Typography>{" "}
-              <Typography>
-                3,Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        </Box>
-        <Box m="10px" w="45%">
-          <Accordion defaultExpanded>
-            <TextField
-              sx={{ padding: "12px" }}
-              margin="normal"
-              required
-              fullWidth
-              id="responses"
-              label="Responses"
-              name="responses"
-              autoFocus
-            />
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography color={theme.palette.grey[500]} variant="h5">
-                Responses
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                eget.
-              </Typography>
-              <Typography>
-                2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                eget.
-              </Typography>
-              <Typography>
-                3. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                eget.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        </Box>
+        <QueAndRes/>
       </Box>
-      <Button variant="contained">
+      {/* <Button variant="contained">
         <SaveIcon />
         Save
-      </Button>
+      </Button> */}
     </>
   );
 };

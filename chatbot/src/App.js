@@ -12,6 +12,7 @@ import UserContext from "./context/UserContext";
 import API from "./axiosConfig";
 
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 function App() {
     const [userData, setUserData] = useState({
       token: undefined,
@@ -25,16 +26,20 @@ function App() {
           localStorage.setItem("auth-token", "");
           token = "";
         }
-        const tokenResponse = await API.post('authUser/tokenIsValid', null, { headers: { "x-auth-token": token } });
-        if (tokenResponse.data) {
-          const userRes = await API.get("authUser/", {
-            headers: { "x-auth-token": token },
-          });
-          setUserData({
-            token,
-            user: userRes.data,
-          });
-        }
+       const tokenResponse = await axios.post(
+         "http://localhost:5000/authUser/tokenIsValid",
+         null,
+         { headers: { "x-auth-token": token } }
+       );
+       if (tokenResponse.data) {
+         const userRes = await axios.get("http://localhost:5000/authUser/", {
+           headers: { "x-auth-token": token },
+         });
+         setUserData({
+           token,
+           user: userRes.data,
+         });
+       }
       }
 
       checkLoggedIn();

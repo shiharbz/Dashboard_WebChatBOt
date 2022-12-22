@@ -8,7 +8,9 @@ app.use(express.json());
 
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-mongoose.set('strictQuery', true);
+// mongoose.set('strictQuery', true);
+
+
 app.use(cookieParser());
 
 dotenv.config();
@@ -20,6 +22,8 @@ app.use(cors({
 }));
 
 app.use("/authUser", require("./routers/userRouter"));
+app.use("/intent", require("./routers/intentRouter"));
+
 
 app.get("/", function (req, res) {
   res.send("ChatBot backend");

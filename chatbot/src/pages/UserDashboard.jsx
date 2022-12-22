@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -15,13 +13,10 @@ import FAQ from "../components/FAQ";
 import Flow from "../components/Flow";
 import { Button } from "@mui/material";
 import API from "../axiosConfig";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import SideBar from "../layouts/SideBar";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Login from "./Login";
@@ -98,10 +93,8 @@ export default function UserDashboard() {
   let navigate = useNavigate();
   const { userData, setUserData } = useContext(UserContext);
 
-  if (!userData.user) {
-  return <Login/>
-}
-
+ 
+  
   async function logout() {
     await API.get("/authUser/logout");
     setUserData({
@@ -148,7 +141,7 @@ export default function UserDashboard() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Welcome to Dashboard {userData.user.firstname}
+            Welcome to Dashboard {userData.user?.firstname}
           </Typography>
           {/* <Divider /> */}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
