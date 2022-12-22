@@ -14,7 +14,6 @@ instance.interceptors.request.use(request => {
     console.log(error);
     return Promise.reject(error);
 });
-
 instance.interceptors.response.use(
   (response) => {
     console.log(response);

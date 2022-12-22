@@ -15,7 +15,7 @@ import FAQ from "../components/FAQ";
 import Flow from "../components/Flow";
 import { Button } from "@mui/material";
 import API from "../axiosConfig";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 import UserContext from "../context/UserContext";
@@ -25,7 +25,6 @@ import MailIcon from "@mui/icons-material/Mail";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Login from "./Login";
-import useToken from "../features/useToken";
 
 const drawerWidth = 240;
 
@@ -93,16 +92,23 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function UserDashboard() {
-  const { token, setToken } = useToken();
 
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   let navigate = useNavigate();
-  const { user, getUser } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
+
+  if (!userData.user) {
+  return <Login/>
+}
 
   async function logout() {
     await API.get("/authUser/logout");
-    sessionStorage.clear();
+    setUserData({
+      token: undefined,
+      user: undefined,
+    });
+        localStorage.setItem("auth-token", "");
 
     navigate("/");
   }
@@ -142,8 +148,7 @@ export default function UserDashboard() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Welcome to Dashboard {user}
-            {/* {user.firstname} */}
+            Welcome to Dashboard {userData.user.firstname}
           </Typography>
           {/* <Divider /> */}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>

@@ -126,7 +126,13 @@ router.post("/login",  async (req, res) => {
       },
       process.env.JWT_SECRET
     );
-    res.json({ token: token, id: existingUser._id });
+    res.json({
+      token: token,
+      user: {
+        id: existingUser._id,
+        firstname: existingUser.firstname,
+      },
+    });
     console.log("token"+token)
     res.cookie("token", token,id, { httpOnly: true }).send();
     res.send({ token: token, id: existingUser._id });
@@ -135,36 +141,15 @@ router.post("/login",  async (req, res) => {
   }
 });
 
-router.get("/loggedIn", (req, res) => {
-  try {
- 
-    const token = req.token;
-    // const email = req.response.email
-    // const token = req.cookies.token;
-    console.log("token--------"+token);
-
-    if (!token) return res.json(null);
-
-    const validatedUser = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = validatedUser.id;
-
-    res.json(validatedUser.id);
-    console.log(validatedUser);
-  } catch (err) {
-    return res.json(null);
-  }
-});
 
 
 
-router.get("/", authUser, async (req, res) => {
+
+
+router.get("/userr", authUser, async (req, res) => {
   try {
     const token = req.cookies;
-
- 
-
     console.log("TOKEN===" + token);
-
     console.log("USERID===" + req.user); //here particular user id is retrieved
 
     const users = await User.findById({ _id: req.user });
@@ -180,6 +165,30 @@ router.get("/", authUser, async (req, res) => {
   }
 });
 
+router.get("/", authUser, async (req, res) => {
+  const user = await User.findById(req.user);
+  res.json({
+    firstname: user.firstname,
+    id: user._id,
+  });
+});
+
+router.post("/tokenIsValid", async (req, res) => {
+  try {
+    const token = req.header("x-auth-token");
+    if (!token) return res.json(false);
+
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    if (!verified) return res.json(false);
+
+    const user = await User.findById(verified.id);
+    if (!user) return res.json(false);
+
+    return res.json(true);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 router.get("/logout", (req, res) => {
   try {

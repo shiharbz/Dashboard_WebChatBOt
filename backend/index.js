@@ -18,11 +18,13 @@ app.use(cors({
     origin: "http://localhost:3000",
     credentials: true
 }));
+
 app.use("/authUser", require("./routers/userRouter"));
 
 app.get("/", function (req, res) {
   res.send("ChatBot backend");
 });
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 mongoose.connect(

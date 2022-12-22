@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,12 +10,13 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useTheme } from "@mui/material/styles";
 import theme from "../theme";
 import API from "../axiosConfig";
 import { Alert } from "@mui/material";
+import UserContext from "../context/UserContext";
 
 function Copyright(props) {
   return (
@@ -40,6 +41,8 @@ const Login = () => {
   const [formPassword, setFormPassword] = useState("");
   let navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
+    const { setUserData } = useContext(UserContext);
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -49,7 +52,13 @@ const Login = () => {
     };
 
     try {
-      await API.post("/authUser/login", loginData);
+      const loginResponse = await API.post("/authUser/login", loginData);
+       setUserData({
+         token: loginResponse.data.token,
+         user: loginResponse.data.user,
+       });
+            localStorage.setItem("auth-token", loginResponse.data.token);
+
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
@@ -82,7 +91,6 @@ const Login = () => {
             mb: -4,
           }}
         >
-          ChatBot
         </Typography>
 
         <Box

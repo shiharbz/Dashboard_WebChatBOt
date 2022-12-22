@@ -3,20 +3,48 @@ import { Routes, Route } from "react-router-dom";
 import SignUp from './pages/SignUp';
 import {  ThemeProvider } from "@material-ui/core";
 import UserDashboard from './pages/UserDashboard';
-import { Box, Container } from '@mui/system';
+import {  Container } from '@mui/system';
 import CssBaseline from "@mui/material/CssBaseline";
 
 import theme from './theme'
 import { GlobalStyles } from '@mui/material';
-import { UserContextProvider } from "./context/UserContext";
+import UserContext from "./context/UserContext";
+import API from "./axiosConfig";
 
-import getUser from '../src/context/UserContext'
+import { useEffect, useState } from 'react';
 function App() {
+    const [userData, setUserData] = useState({
+      token: undefined,
+      user: undefined
+    });
+
+    useEffect(() => {
+      const checkLoggedIn = async () => {
+        let token = localStorage.getItem("auth-token");
+        if (token === null) {
+          localStorage.setItem("auth-token", "");
+          token = "";
+        }
+        const tokenResponse = await API.post('authUser/tokenIsValid', null, { headers: { "x-auth-token": token } });
+        if (tokenResponse.data) {
+          const userRes = await API.get("authUser/", {
+            headers: { "x-auth-token": token },
+          });
+          setUserData({
+            token,
+            user: userRes.data,
+          });
+        }
+      }
+
+      checkLoggedIn();
+    }, []);
+  
 
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <UserContextProvider >
+        <UserContext.Provider value={{ userData, setUserData }}>
           <CssBaseline />
           <Container>
             <GlobalStyles
@@ -38,7 +66,7 @@ function App() {
               <Route path="/dashboard" element={<UserDashboard />} />
             </Routes>
           </Container>
-        </UserContextProvider>
+        </UserContext.Provider>
       </ThemeProvider>
     </div>
   );
