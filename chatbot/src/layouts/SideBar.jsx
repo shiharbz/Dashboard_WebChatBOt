@@ -26,7 +26,7 @@ function SideBar (open,setOpen){
 
   return (
     <div>
-      <List>
+      <List sx={{ color: "#ffcc4f" }}>
         <ListItem disablePadding sx={{ display: "block" }}>
           <ListItemButton
             sx={{
@@ -40,6 +40,7 @@ function SideBar (open,setOpen){
                 minWidth: 0,
                 mr: open ? 3 : "auto",
                 justifyContent: "center",
+                color: "#228096",
               }}
             >
               <ShowChartIcon />
@@ -58,8 +59,9 @@ function SideBar (open,setOpen){
             <ListItemIcon
               sx={{
                 minWidth: 0,
-              mr: open ? 3 : "auto",
+                mr: open ? 3 : "auto",
                 justifyContent: "center",
+                color: "#228096",
               }}
             >
               {" "}
@@ -81,6 +83,7 @@ function SideBar (open,setOpen){
                 minWidth: 0,
                 mr: open ? 3 : "auto",
                 justifyContent: "center",
+                color: "#228096",
               }}
             >
               <LiveHelpIcon />
@@ -90,7 +93,7 @@ function SideBar (open,setOpen){
         </ListItem>
       </List>
       <Divider />
-      <List>
+      <List sx={{ display: "block", color: "#ffcc4f" }}>
         {["Subscribe", "Profile", "Settings"].map((text, index) => (
           <ListItem key={text} disablePadding sx={{ display: "block" }}>
             <ListItemButton
@@ -105,6 +108,7 @@ function SideBar (open,setOpen){
                   minWidth: 0,
                   mr: open ? 3 : "auto",
                   justifyContent: "center",
+                  color: "#228096",
                 }}
               >
                 {" "}

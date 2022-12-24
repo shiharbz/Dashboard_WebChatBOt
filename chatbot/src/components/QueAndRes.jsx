@@ -38,7 +38,7 @@ function QueAndRes({ intentIdd, token }) {
       headers: { "x-auth-token": token },
     });
     setResponseData(RespRes.data);
-    console.log("//////////////////"+RespRes.data);
+    console.log("//////////////////" + RespRes.data);
   }
 
   useEffect(
@@ -55,9 +55,7 @@ function QueAndRes({ intentIdd, token }) {
   );
 
   async function addQuestion(e) {
-
     e.preventDefault();
-
     const queData = {
       quest: questions,
     };
@@ -70,9 +68,7 @@ function QueAndRes({ intentIdd, token }) {
           headers: { "x-auth-token": token },
         }
       );
-      console.log("intentid++++++++++" + intentIdd);
-
-      localStorage.getItem("auth-token", Response.data.token);
+      // localStorage.getItem("auth-token", Response.data.token);
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
@@ -83,17 +79,13 @@ function QueAndRes({ intentIdd, token }) {
     }
     alert("added successfully");
     window.location.reload(false);
-
-    getQuesDatas();
   }
 
   async function addResponse(e) {
     e.preventDefault();
-
     const resData = {
       responses: responses,
     };
-
     try {
       const Response = await API.post(
         `/intent/addResponses/${intentIdd}`,
@@ -102,8 +94,6 @@ function QueAndRes({ intentIdd, token }) {
           headers: { "x-auth-token": token },
         }
       );
-   
-      
     } catch (err) {
       if (err.response) {
         if (err.response.data.errorMessage) {
@@ -113,9 +103,8 @@ function QueAndRes({ intentIdd, token }) {
       return;
     }
     alert("added successfully");
-    window.location.reload(false);   
+    window.location.reload(false);
   }
-
 
   return (
     <>
@@ -123,83 +112,77 @@ function QueAndRes({ intentIdd, token }) {
         component="form"
         onSubmit={addQuestion}
         m="5px"
-        sx={{ minWidth: "30%" }}
+        sx={{ minWidth: "50%", background: "#feebe8", color: "#000000" }}
       >
-       
-        <Accordion defaultExpanded>
-          <TextField
-            sx={{ padding: "12px" }}
-            margin="normal"
-            required
-            fullWidth
-            id="questions"
-            label="Add a training phrase"
-            name="questions"
-            autoFocus
-            value={questions}
-            onChange={(e) => setQuestions(e.target.value)}
-          />
-          <Button variant="text" type="submit">
-            {" "}
-            <AddIcon />
-          </Button>
+        {/* <Accordion defaultExpanded> */}
+        <TextField
+          sx={{ padding: "12px" }}
+          margin="normal"
+          required
+          fullWidth
+          id="questions"
+          label="Add a training phrase"
+          name="questions"
+          autoFocus
+          value={questions}
+          onChange={(e) => setQuestions(e.target.value)}
+        />
+        <Button variant="text" type="submit">
+          {" "}
+          <AddIcon />
+        </Button>
 
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            {" "}
-            <Typography color={theme.palette.grey[500]} variant="h5">
-              Training Phrases
+        <AccordionSummary>
+          {" "}
+          <Typography variant="h5"color="#f37164">
+            Training Phrases
+          </Typography>
+        </AccordionSummary>
+
+        {intentQuestion.map((data, i) => (
+          <AccordionDetails>
+            <Typography key={i}>
+              {i}.&nbsp;{data.quest}
             </Typography>
-          </AccordionSummary>
-         
-            {intentQuestion.map((data, i) => (
-             <AccordionDetails>
-                <Typography key={i}>
-                  {i}.&nbsp;{data.quest}
-                </Typography>
-                <br />
-             </AccordionDetails>
-            ))}
-          
-        </Accordion>
+          </AccordionDetails>
+        ))}
+        {/* </Accordion> */}
       </Box>
       <Box
         m="5px"
         component="form"
         onSubmit={addResponse}
-        sx={{ minWidth: "30%" }}
+        sx={{ minWidth: "50%", background: "#feebe8", color: "#000000" }}
       >
-        <Accordion defaultExpanded>
-          <TextField
-            sx={{ padding: "12px" }}
-            margin="normal"
-            required
-            fullWidth
-            id="responses"
-            label="Responses"
-            name="responses"
-            autoFocus
-            value={responses}
-            onChange={(e) => setResponses(e.target.value)}
-          />
-          <Button variant="text" type="submit">
-            {" "}
-            <AddIcon />
-          </Button>
+        <TextField
+          sx={{ padding: "12px" }}
+          margin="normal"
+          required
+          fullWidth
+          id="responses"
+          label="Responses"
+          name="responses"
+          autoFocus
+          value={responses}
+          onChange={(e) => setResponses(e.target.value)}
+        />
+        <Button variant="text" type="submit">
+          {" "}
+          <AddIcon />
+        </Button>
 
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography color={theme.palette.grey[500]} variant="h5">
-              Responses
+        <AccordionSummary>
+          <Typography variant="h5" color="#f37164">
+            Responses
+          </Typography>
+        </AccordionSummary>
+        {responseData.map((data, i) => (
+          <AccordionDetails key={i}>
+            <Typography>
+              {i}.&nbsp;{data.responses}
             </Typography>
-          </AccordionSummary>
-          {responseData.map((data, i) => (
-            <AccordionDetails key={i}>
-              <Typography >
-                {i}.&nbsp;{data.responses}
-              </Typography>
-            </AccordionDetails>
-          ))}
-      
-        </Accordion>
+          </AccordionDetails>
+        ))}
       </Box>
     </>
   );

@@ -78,18 +78,11 @@ export default function SignUp() {
       Registration successful...Please Log in again!
     </Alert>;
      alert("Registration successful...Please Log in again");
-    //  logOut();
+   
      navigate("/");
 
-    console.log(document.cookie);
    
-
    
-    
-     
- 
-
-  
   };
 
   return (
@@ -127,21 +120,14 @@ export default function SignUp() {
         <Typography
           component="h1"
           variant="h5"
-          sx={{ color: theme.palette.primary.main }}
+          sx={{ color: "rgb(255, 215, 0)" }}
         >
           Sign up
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            {errorMessage && (
-                <Alert severity="error">
-                  {errorMessage}
-             
-                </Alert>
-              )}
+            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
             <Grid item xs={12} sm={6}>
-             
-
               <TextField
                 autoComplete="given-name"
                 name="firstName"

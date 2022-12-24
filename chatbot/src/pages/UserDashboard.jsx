@@ -20,7 +20,7 @@ import SideBar from "../layouts/SideBar";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Login from "./Login";
-
+import LogoSvg from "../constants/favicon.svg";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -121,7 +121,7 @@ export default function UserDashboard() {
         component="nav"
         position="fixed"
         open={open}
-        sx={{ background: "#0f2027" }}
+        // sx={{ background: "#228096" }}
       >
         <Toolbar>
           <IconButton
@@ -136,6 +136,7 @@ export default function UserDashboard() {
           >
             <MenuIcon />
           </IconButton>
+       
           <Typography
             variant="h6"
             noWrap
@@ -144,7 +145,6 @@ export default function UserDashboard() {
           >
             Welcome to Dashboard {userData.user?.firstname}
           </Typography>
-          {/* <Divider /> */}
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             <Button sx={{ color: "#FFF" }}>Profile</Button>
             <Button sx={{ color: "#FFF" }}>About</Button>

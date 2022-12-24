@@ -1,4 +1,10 @@
-import { Box, Button, useTheme } from "@mui/material";
+import {
+  AccordionSummary,
+  Box,
+  Button,
+  Typography,
+  useTheme,
+} from "@mui/material";
 // import Header from "../../components/Header";
 
 import TextField from "@mui/material/TextField";
@@ -74,17 +80,21 @@ const FAQ = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex",margin:0,padding:0 }}>
+      <Typography variant="h1" component="h2" color="#0e0e0e">
+        FAQ
+      </Typography>
+      <Box sx={{ display: "flex", margin: 0, padding: 0 }}>
         <Box
           m="5px"
-          
           sx={{
             marginLeft: "-90px",
             p: 4,
             border: "1px grey",
-            background: "#FFF",
+
+            color: "#228096",
+
             minWidth: "20%",
-            alignContent:"center"
+            alignContent: "center",
           }}
         >
           {" "}
@@ -99,42 +109,55 @@ const FAQ = () => {
               name="intent"
               value={intent}
               onChange={(e) => setIntent(e.target.value)}
+              sx={{ background: "#FFF" }}
               autoFocus
             />
             <Button variant="text" type="submit">
               <AddIcon />
             </Button>
           </Box>
-          <Divider />
+          <Divider color="#ffcc4f" />
+          <AccordionSummary>
+            {" "}
+            <Typography variant="h5" color="#f37164">
+              Intent
+            </Typography>
+          </AccordionSummary>
           {intentDatas.map((data, i) => (
             <ListItem
               key={data._id}
               disablePadding
-              sx={{ display: "block", padding: "4px" }}
+              sx={{
+                display: "block",
+                padding: "4px",
+                alignContent: "center",
+                alignItems: "center",
+              }}
             >
               <ListItemButton
                 sx={{
                   minHeight: 48,
-                  px: 2.5,
+                  alignItems: "center",
+                  alignContent: "center",
+                  // px: 2.5,
                 }}
                 type="submit"
                 onClick={() => handleAddQues(data._id)}
-
-                // onSubmit={setIntentId(`data._id`)}
-                // onClick={setIntentId(`data._id`)}
               >
-                <ListItemText primary={data.title} />{" "}
-                {/* <ListItemText primary={data._id} />{" "} */}
+                <ListItemText
+                  primary={data.title}
+                  sx={{
+                    "&:hover": {
+                      color: "#ffcc4f",
+                    },
+                  }}
+                />{" "}
               </ListItemButton>{" "}
             </ListItem>
           ))}
         </Box>
         {<QueAndRes intentIdd={intentIdd} token={token} />}
       </Box>
-      {/* <Button variant="contained">
-        <SaveIcon />
-        Save
-      </Button> */}
     </>
   );
 };

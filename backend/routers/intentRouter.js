@@ -150,7 +150,7 @@ router.get("/allRes/:id", authUser, async (req, res) => {
 
   res.json(responses);
 
-  console.log(responses);
+
 });
 
 router.get("/all", authUser, async (req, res) => {
@@ -158,9 +158,8 @@ router.get("/all", authUser, async (req, res) => {
 
   res.json(intents);
 
-  // console.log(intents);
 });
 
-router.post("/addresponse/:id", async (req, res, next) => {});
+
 
 module.exports = router;

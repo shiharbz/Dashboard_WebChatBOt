@@ -90,8 +90,7 @@ const Login = () => {
             mt: 4,
             mb: -4,
           }}
-        >
-        </Typography>
+        ></Typography>
 
         <Box
           sx={{
@@ -104,7 +103,11 @@ const Login = () => {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{ color: "rgb(255, 215, 0)" }}
+          >
             Sign in
           </Typography>
 
