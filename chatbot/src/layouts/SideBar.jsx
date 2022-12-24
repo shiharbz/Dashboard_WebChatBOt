@@ -9,21 +9,21 @@ import { styled, useTheme } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
 import List from "@mui/material/List";
+import { Divider } from "@mui/material";
 
 const drawerWidth = 240;
 
-const SideBar = () => {
+function SideBar (open,setOpen){
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
+
   let navigate = useNavigate();
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+ 
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
   return (
     <div>
       <List>
@@ -44,7 +44,28 @@ const SideBar = () => {
             >
               <ShowChartIcon />
             </ListItemIcon>
-            <ListItemText primary="Flows" sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText primary="Flows" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <ListItemButton
+            sx={{
+              minHeight: 48,
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+              mr: open ? 3 : "auto",
+                justifyContent: "center",
+              }}
+            >
+              {" "}
+              <LiveHelpIcon />
+            </ListItemIcon>
+            <ListItemText primary=" Q&A " />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding sx={{ display: "block" }}>
@@ -64,55 +85,37 @@ const SideBar = () => {
             >
               <LiveHelpIcon />
             </ListItemIcon>
-            <ListItemText primary="Q&A" sx={{ opacity: open ? 1 : 0 }} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding sx={{ display: "block" }}>
-          <ListItemButton
-            sx={{
-              minHeight: 48,
-              justifyContent: open ? "initial" : "center",
-              px: 2.5,
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: 0,
-                mr: open ? 3 : "auto",
-                justifyContent: "center",
-              }}
-            >
-              <LiveHelpIcon />
-            </ListItemIcon>
-            <ListItemText primary="Chat Log" sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText primary="Chat Log" />
           </ListItemButton>
         </ListItem>
       </List>
-      {/* <Divider /> */}
-      {/* <List>
-          {["Data", "FlowChart", "Settings"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
+      <Divider />
+      <List>
+        {["Subscribe", "Profile", "Settings"].map((text, index) => (
+          <ListItem key={text} disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <MailIcon /> : <InboxIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
+                {" "}
+                <ShowChartIcon />
+                {/* {index % 2 === 0 ? <MailIcon /> : <InboxIcon />} */}
+              </ListItemIcon>
+              <ListItemText sx={{ display: "hidden" }} primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 };

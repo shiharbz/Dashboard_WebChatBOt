@@ -6,9 +6,10 @@ const app = express();
 app.use(express.json());
 
 
+
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-// mongoose.set('strictQuery', true);
+mongoose.set('strictQuery', true);
 
 
 app.use(cookieParser());

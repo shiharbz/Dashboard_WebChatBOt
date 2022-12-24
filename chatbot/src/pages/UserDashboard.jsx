@@ -105,6 +105,7 @@ export default function UserDashboard() {
 
     navigate("/");
   }
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -153,7 +154,7 @@ export default function UserDashboard() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} setOpen={setOpen}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
@@ -164,7 +165,7 @@ export default function UserDashboard() {
           </IconButton>
         </DrawerHeader>
 
-        <SideBar />
+        <SideBar open={open} />
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

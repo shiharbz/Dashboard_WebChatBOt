@@ -26,6 +26,8 @@ const FAQ = () => {
   const [intentDatas, setIntentDatas] = useState([]);
   const user = userData.user;
   const token = userData.token;
+  const [intentIdd, setIntentId] = useState("");
+  const [form, setForm] = useState(false);
   async function addIntent(e) {
     e.preventDefault();
     const intentData = {
@@ -50,6 +52,12 @@ const FAQ = () => {
     alert("added successfully");
     window.location.reload(false);
   }
+  async function handleAddQues(intentId) {
+    console.log("**************", intentId);
+    setIntentId(intentId);
+    console.log(intentIdd);
+    setForm(true);
+  }
   async function getIntentDatas() {
     const intentsRes = await API.get("/intent/all", {
       headers: { "x-auth-token": token },
@@ -66,15 +74,17 @@ const FAQ = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex",margin:0,padding:0 }}>
         <Box
-          m="10px"
-          w="30%"
+          m="5px"
+          
           sx={{
-            marginLeft: "-40px",
+            marginLeft: "-90px",
             p: 4,
             border: "1px grey",
             background: "#FFF",
+            minWidth: "20%",
+            alignContent:"center"
           }}
         >
           {" "}
@@ -96,20 +106,30 @@ const FAQ = () => {
             </Button>
           </Box>
           <Divider />
-          <ListItem disablePadding sx={{ display: "block", padding: "4px" }}>
-            {intentDatas.map((data, i) => (
+          {intentDatas.map((data, i) => (
+            <ListItem
+              key={data._id}
+              disablePadding
+              sx={{ display: "block", padding: "4px" }}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
                   px: 2.5,
                 }}
+                type="submit"
+                onClick={() => handleAddQues(data._id)}
+
+                // onSubmit={setIntentId(`data._id`)}
+                // onClick={setIntentId(`data._id`)}
               >
                 <ListItemText primary={data.title} />{" "}
-              </ListItemButton>
-            ))}
-          </ListItem>
+                {/* <ListItemText primary={data._id} />{" "} */}
+              </ListItemButton>{" "}
+            </ListItem>
+          ))}
         </Box>
-        <QueAndRes/>
+        {<QueAndRes intentIdd={intentIdd} token={token} />}
       </Box>
       {/* <Button variant="contained">
         <SaveIcon />

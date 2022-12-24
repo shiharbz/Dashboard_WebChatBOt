@@ -133,6 +133,7 @@ router.post("/login",  async (req, res) => {
         firstname: existingUser.firstname,
       },
     });
+    
     console.log("token"+token)
     res.cookie("token", token,id, { httpOnly: true }).send();
     res.send({ token: token, id: existingUser._id });
