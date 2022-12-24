@@ -15,7 +15,7 @@ import API from "../axiosConfig";
 import { Alert } from "@mui/material";
 import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
-function QueAndRes({intentIdd,token}) {
+function QueAndRes({ intentIdd, token }) {
   const theme = useTheme();
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -23,28 +23,39 @@ function QueAndRes({intentIdd,token}) {
   const [intentQuestion, setIntentQues] = useState([]);
 
   const [responses, setResponses] = useState([]);
+  const [responseData, setResponseData] = useState([]);
 
-    
-     async function getQuesDatas() {
-       const QuesRes = await API.get(`/intent/allQue/${intentIdd}`, {
-         headers: { "x-auth-token": token },
-       });
-       setIntentQues(QuesRes.data);
-       console.log(QuesRes.data);
-     }
-     useEffect(
-       (intentIdd) => {
-         if (token) {
-           getQuesDatas();
-         } else {
-           setIntentQues([]);
-         }
-       },
-       [intentIdd]
-     );
-    
-    
+  async function getQuesDatas() {
+    const QuesRes = await API.get(`/intent/allQue/${intentIdd}`, {
+      headers: { "x-auth-token": token },
+    });
+    setIntentQues(QuesRes.data);
+    console.log(QuesRes.data);
+  }
+
+  async function getRespDatas() {
+    const RespRes = await API.get(`/intent/allRes/${intentIdd}`, {
+      headers: { "x-auth-token": token },
+    });
+    setResponseData(RespRes.data);
+    console.log("//////////////////"+RespRes.data);
+  }
+
+  useEffect(
+    (intentIdd) => {
+      if (token) {
+        getQuesDatas();
+        getRespDatas();
+      } else {
+        setIntentQues([]);
+        setResponseData([]);
+      }
+    },
+    [intentIdd]
+  );
+
   async function addQuestion(e) {
+
     e.preventDefault();
 
     const queData = {
@@ -54,9 +65,11 @@ function QueAndRes({intentIdd,token}) {
     try {
       const Response = await API.post(
         `/intent/addQuestions/${intentIdd}`,
-        queData,{
-         headers: { "x-auth-token": token },
-       });
+        queData,
+        {
+          headers: { "x-auth-token": token },
+        }
+      );
       console.log("intentid++++++++++" + intentIdd);
 
       localStorage.getItem("auth-token", Response.data.token);
@@ -70,9 +83,39 @@ function QueAndRes({intentIdd,token}) {
     }
     alert("added successfully");
     window.location.reload(false);
-    
+
     getQuesDatas();
   }
+
+  async function addResponse(e) {
+    e.preventDefault();
+
+    const resData = {
+      responses: responses,
+    };
+
+    try {
+      const Response = await API.post(
+        `/intent/addResponses/${intentIdd}`,
+        resData,
+        {
+          headers: { "x-auth-token": token },
+        }
+      );
+   
+      
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data.errorMessage) {
+          setErrorMessage(err.response.data.errorMessage);
+        }
+      }
+      return;
+    }
+    alert("added successfully");
+    window.location.reload(false);   
+  }
+
 
   return (
     <>
@@ -82,8 +125,7 @@ function QueAndRes({intentIdd,token}) {
         m="5px"
         sx={{ minWidth: "30%" }}
       >
-        {/* <Header title="FAQ" subtitle="Frequently Asked Questions Page" /> */}
-
+       
         <Accordion defaultExpanded>
           <TextField
             sx={{ padding: "12px" }}
@@ -108,20 +150,24 @@ function QueAndRes({intentIdd,token}) {
               Training Phrases
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            {intentQuestion.map((data, i) => (<>
-              <Typography key={i}>
-                {i}.&nbsp;{data.quest}  
-              
-              </Typography><br/></>
-        
+         
+            {intentQuestion.map((data, i) => (
+             <AccordionDetails>
+                <Typography key={i}>
+                  {i}.&nbsp;{data.quest}
+                </Typography>
+                <br />
+             </AccordionDetails>
             ))}
-            
-            
-          </AccordionDetails>
+          
         </Accordion>
       </Box>
-      <Box m="5px" sx={{ minWidth: "30%" }}>
+      <Box
+        m="5px"
+        component="form"
+        onSubmit={addResponse}
+        sx={{ minWidth: "30%" }}
+      >
         <Accordion defaultExpanded>
           <TextField
             sx={{ padding: "12px" }}
@@ -135,7 +181,7 @@ function QueAndRes({intentIdd,token}) {
             value={responses}
             onChange={(e) => setResponses(e.target.value)}
           />
-          <Button variant="text">
+          <Button variant="text" type="submit">
             {" "}
             <AddIcon />
           </Button>
@@ -145,11 +191,14 @@ function QueAndRes({intentIdd,token}) {
               Responses
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. eget.
-            </Typography>
-          </AccordionDetails>
+          {responseData.map((data, i) => (
+            <AccordionDetails key={i}>
+              <Typography >
+                {i}.&nbsp;{data.responses}
+              </Typography>
+            </AccordionDetails>
+          ))}
+      
         </Accordion>
       </Box>
     </>

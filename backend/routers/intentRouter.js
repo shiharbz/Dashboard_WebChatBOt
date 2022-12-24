@@ -86,6 +86,53 @@ router.post("/addQuestions/:id", authUser,async (req, res, next) => {
 });
 
 
+router.post("/addResponses/:id", authUser, async (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+    const user = req.user;
+
+    const { responses } = req.body;
+    const id = req.params.id;
+
+    console.log("res........" + responses);
+
+    if (!responses) {
+      return res.status(400).json({
+        errorMessage: "Please add question",
+      });
+    }
+    const Intentque = await Intent.findById(id);
+    console.log(Intentque);
+
+    const responseIntent = Intentque.responses;
+    console.log(responseIntent);
+    responseIntent.res = responses;
+
+    console.log(responses);
+    
+
+    const newResponses = new Responses({ responses, id });
+    console.log("new res....." + newResponses);
+
+    const title = Intentque.title;
+    const newIntent = new Intent({ Responses, id });
+
+    await newResponses.save((error, values) => {
+      if (error) {
+        console.log(error);
+
+        return res.status(400).json({
+          error: errorHandler(error),
+        });
+      }
+    });
+    return res.json(true);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send();
+  }
+});
+
 router.get("/allQue/:id", authUser, async (req, res) => {
   const intentid = req.params.id;
 
@@ -93,7 +140,17 @@ router.get("/allQue/:id", authUser, async (req, res) => {
 
   res.json(questions);
 
-  console.log( questions);
+ 
+});
+
+router.get("/allRes/:id", authUser, async (req, res) => {
+  const intentid = req.params.id;
+
+  const responses = await Responses.find({ id: intentid });
+
+  res.json(responses);
+
+  console.log(responses);
 });
 
 router.get("/all", authUser, async (req, res) => {

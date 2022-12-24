@@ -18,7 +18,7 @@ const Questions = mongoose.model("Questions", QuestionSchema);
 
 const ResponseSchema = new mongoose.Schema({
   id: { type: ObjectId, ref: "Intent" },
-  res: String,
+  responses: String,
 });
 
 const Responses = mongoose.model("Responses", ResponseSchema);
