@@ -25,7 +25,8 @@ function SideBar (open,setOpen){
   };
 
   return (
-    <div>
+    <div><br />
+
       <List sx={{ color: "#ffcc4f" }}>
         <ListItem disablePadding sx={{ display: "block" }}>
           <ListItemButton

@@ -34,6 +34,7 @@ const FAQ = () => {
   const token = userData.token;
   const [intentIdd, setIntentId] = useState("");
   const [form, setForm] = useState(false);
+
   async function addIntent(e) {
     e.preventDefault();
     const intentData = {
@@ -156,7 +157,7 @@ const FAQ = () => {
             </ListItem>
           ))}
         </Box>
-        {<QueAndRes intentIdd={intentIdd} token={token} />}
+        {form &&(<QueAndRes intentIdd={intentIdd} token={token} />)}
       </Box>
     </>
   );

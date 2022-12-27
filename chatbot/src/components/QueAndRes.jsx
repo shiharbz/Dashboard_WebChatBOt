@@ -142,7 +142,7 @@ function QueAndRes({ intentIdd, token }) {
         {intentQuestion.map((data, i) => (
           <AccordionDetails>
             <Typography key={i}>
-              {i}.&nbsp;{data.quest}
+              {i+1}.&nbsp;{data.quest}
             </Typography>
           </AccordionDetails>
         ))}
@@ -179,7 +179,7 @@ function QueAndRes({ intentIdd, token }) {
         {responseData.map((data, i) => (
           <AccordionDetails key={i}>
             <Typography>
-              {i}.&nbsp;{data.responses}
+              {i+1}.&nbsp;{data.responses}
             </Typography>
           </AccordionDetails>
         ))}
