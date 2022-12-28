@@ -22,6 +22,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Login from "./Login";
 import LogoSvg from "../constants/favicon.svg";
 import Flows from "../components/Flows";
+import Dasboard from "./Dasboard";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -88,25 +89,23 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function UserDashboard() {
-
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   let navigate = useNavigate();
   const { userData, setUserData } = useContext(UserContext);
+  const [active, setActive] = useState("dasboard");
 
- 
-  
   async function logout() {
     await API.get("/authUser/logout");
     setUserData({
       token: undefined,
       user: undefined,
     });
-        localStorage.setItem("auth-token", "");
+    localStorage.setItem("auth-token", "");
 
     navigate("/");
   }
-  
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -137,7 +136,7 @@ export default function UserDashboard() {
           >
             <MenuIcon />
           </IconButton>
-       
+
           <Typography
             variant="h6"
             noWrap
@@ -166,14 +165,16 @@ export default function UserDashboard() {
           </IconButton>
         </DrawerHeader>
 
-        <SideBar open={open} />
+        <SideBar active={active} setActive={setActive} open={open} setOpen={setOpen} />
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {/* <Flow /> */}
+        {active === "dasboard" && <Dasboard />}
 
-        {/* <FAQ /> */}
-        <Flows  />
+        {/* {active==="flows" &&  <Flow />}  */}
+        {active === "FAQ" && <FAQ />}
+
+        {active === "flows" && <Flows />}
       </Box>
     </Box>
   );

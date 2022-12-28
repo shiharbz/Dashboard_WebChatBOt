@@ -13,23 +13,23 @@ import { Divider } from "@mui/material";
 
 const drawerWidth = 240;
 
-function SideBar (open,setOpen){
+function SideBar({ active, setActive }, open, setOpen) {
   const theme = useTheme();
 
   let navigate = useNavigate();
-
- 
 
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
   return (
-    <div><br />
+    <div>
+      <br />
 
       <List sx={{ color: "#ffcc4f" }}>
         <ListItem disablePadding sx={{ display: "block" }}>
           <ListItemButton
+            onClick={() => setActive("flows")}
             sx={{
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
@@ -51,6 +51,7 @@ function SideBar (open,setOpen){
         </ListItem>
         <ListItem disablePadding sx={{ display: "block" }}>
           <ListItemButton
+            onClick={() => setActive("FAQ")}
             sx={{
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
@@ -68,11 +69,12 @@ function SideBar (open,setOpen){
               {" "}
               <LiveHelpIcon />
             </ListItemIcon>
-            <ListItemText primary=" Q&A " />
+            <ListItemText primary=" F&Q " />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding sx={{ display: "block" }}>
           <ListItemButton
+            onClick={() => setActive("chatlog")}
             sx={{
               minHeight: 48,
               justifyContent: open ? "initial" : "center",
