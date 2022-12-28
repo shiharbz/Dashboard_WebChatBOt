@@ -24,6 +24,8 @@ app.use(cors({
 
 app.use("/authUser", require("./routers/userRouter"));
 app.use("/intent", require("./routers/intentRouter"));
+app.use("/stories", require("./routers/storiesRouter"));
+
 
 
 app.get("/", function (req, res) {

@@ -12,7 +12,6 @@ router.post("/addTitle/:id", async (req, res, next) => {
 
   const user = req.params.id;
 
-  // console.log(id);
 
 
   const originaltitle = await Intent.findOne({ title });
