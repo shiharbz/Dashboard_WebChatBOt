@@ -1,7 +1,7 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
+
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -11,24 +11,26 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useTheme } from "@mui/material/styles";
+
 import theme from "../theme";
+// import ErrorMessage from "../misc/ErrorMessage";
+
+import API from "../axiosConfig";
+import { Alert } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
-
   return (
     <Typography
       variant="body2"
       color="text.secondary"
       align="center"
       {...props}
-      
-       
-    
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://www.bzanalytics.ai/">
+        BzAnalytics
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -37,16 +39,50 @@ function Copyright(props) {
 }
 
 
+
 export default function SignUp() {
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formPassword, setFormPassword] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+    let navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  
+  const [errorMessage, setErrorMessage] = useState(null);
+  
+
+  
+  async function handleSubmit  (event) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const registerData = {
+      firstname: firstName,
+      lastname: lastName,
+      email: formEmail,
+      password: formPassword,
+    };
+    try {
+     await API.post("/authUser/sign-up", registerData);     
+    } catch (err) {
+      if (err.response) {
+        if (err.response.data.errorMessage) {
+          setErrorMessage(err.response.data.errorMessage);
+        }
+      }
+
+      return;
+    }
+    <Alert onClose={() => {}}>
+      Registration successful...Please Log in again!
+    </Alert>;
+     alert("Registration successful...Please Log in again");
+   
+     navigate("/");
+
+   
+   
   };
 
   return (
@@ -84,12 +120,13 @@ export default function SignUp() {
         <Typography
           component="h1"
           variant="h5"
-          sx={{ color: theme.palette.primary.main }}
+          sx={{ color: "rgb(255, 215, 0)" }}
         >
           Sign up
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
+            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
@@ -99,6 +136,7 @@ export default function SignUp() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -109,6 +147,7 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="family-name"
+                onChange={(e) => setLastName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -119,6 +158,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={(e) => setFormEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -130,6 +170,7 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                onChange={(e) => setFormPassword(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -149,7 +190,7 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/" variant="body2" >
+              <Link href="/" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
